@@ -1,0 +1,25 @@
+\contentsline {section}{\numberline {1}Linear Regression}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Basis Expansion}{4}{subsection.1.1}%
+\contentsline {section}{\numberline {2}Learning Curves, Validation, Feature Selection}{6}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Learning Curves}{6}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Regularisation}{6}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Validation}{8}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Feature Selection}{9}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Optimization}{10}{section.3}%
+\contentsline {subsection}{\numberline {3.1}MLE}{10}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Convex Optimization}{11}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Gradient Descent}{13}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Classification}{17}{section.4}%
+\contentsline {subsection}{\numberline {4.1}KNN}{17}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Generative models}{18}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Logistic Regression}{21}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Performance Measurement}{23}{subsection.4.4}%
+\contentsline {section}{\numberline {5}SVM}{24}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Kernel Calculation Rules}{26}{subsection.5.1}%
+\contentsline {section}{\numberline {6}Neural Networks}{27}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Model Learning}{28}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Challenges in training deep NNs}{31}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Clustering}{32}{section.7}%
+\contentsline {section}{\numberline {8}PCA}{37}{section.8}%
+\contentsline {section}{\numberline {A}Mathematical Appendix}{42}{appendix.A}%
+\contentsline {section}{\numberline {B}Complexity of matrix computations}{43}{appendix.B}%
