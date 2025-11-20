@@ -91,7 +91,16 @@
 \newpage
 
 
+\subsubsection*{Common Task Framework and Data Science vs Statistics}
 
+Data Science concerns itself with very large data, focuses on predictive vs generative modelling.
+
+Common Task Framework consists of three elements:
+\begin{itemize}
+	\item Publicly available training data
+	\item Compeittors with \emph{common task} to infer a class prediction rule from training data
+	\item A scoring referee who runs prediction rule against a test data set and objective reports the score
+\end{itemize}
 
 \subsubsection*{Definition of Machine Learning}
 
@@ -1006,6 +1015,95 @@ Reasons to prefer dual form:
 
 
 
+\subsection{Graphically finding support vectors}
+
+\begin{itemize}
+	\item Support vectors are points closest to each other when trying to fit linear line through data
+	\item If there are two support vectors:
+
+	Hyperplane of support vectors is orthogonal to line connecting two support vectors, going through middle of this connecting line. If slope between support vectors is $-m$, then the slope of the hyperplane is $1 / m$.
+
+	\item Three support vectors:
+
+	Hyperplane of support vectors is parallel to the line connecting the two support vectors which are on the same side of the decision boundary. The line goes through the midpoint between the line perpendicular to this line.\footnote{One way to do this is to find the parlallel lines going through the support vectors on both sides and noting that the separating boundary lies in the middle with same slope, so we can simply take $b = (b_1 + b_2) / 2$ where $b_1, b_2$ are intercepts of the parallel lines going through support vectors.}
+
+	See illustrations in Figure \ref{fig.svm}.
+
+	\item To find weights, take two points $\mathbf{x}_1,\mathbf{x}_2$ on hyperplane, plug into equation $w_0 + \mathbf{w} \cdot \mathbf{x} = 0$. Check on support vectors whether signs $(\pm \mathbf{w})$ are correct.
+	\item Margin: Calculate distance of support vector to hyperplane. Distance of point $\mathbf{x}$ to midpoint between the two support vectors. Alternatively, use weights $\mathbf{w}$ and Eq. \eqref{eq.disthyperplane}
+\end{itemize}
+
+\begin{figure}
+\caption{Illustration: Graphically finding support vectors.}
+\label{fig.svm}
+\begin{tikzpicture}[scale=1]
+    % First figure - two support vectors
+    % Grid and axes
+    \draw[very thin,gray!30] (-2,-2) grid (2,2);
+    \draw[->] (-2,0) -- (2,0) node[right] {$x_1$};
+    \draw[->] (0,-2) -- (0,2) node[above] {$x_2$};
+
+    % Support vectors
+    \node[circle,fill=red,inner sep=2pt] (sv1) at (-1,1) {};
+    \node[circle,fill=blue,inner sep=2pt] (sv2) at (1,-1) {};
+
+    % Other points
+    \node[circle,fill=red,inner sep=2pt] at (-1.5,0.8) {};
+    \node[circle,fill=red,inner sep=2pt] at (-0.8,1.5) {};
+    \node[circle,fill=blue,inner sep=2pt] at (1.5,-0.8) {};
+    \node[circle,fill=blue,inner sep=2pt] at (0.8,-1.5) {};
+
+    % Connecting line between support vectors (dashed)
+    \draw[dashed] (sv1) -- (sv2);
+
+    % Decision boundary (perpendicular bisector)
+    \draw[thick] ($(sv1)!0.5!(sv2)!1.5cm!90:(sv2)$) -- ($(sv1)!0.5!(sv2)!-1.5cm!90:(sv2)$);
+
+    % Labels
+    \node at (-1.3,1.3) {$SV_1$};
+    \node at (1.3,-1.3) {$SV_2$};
+    \node at (0,-2.3) {(a) Two support vectors};
+
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}[scale=1]
+    % Second figure - three support vectors
+    % Grid and axes
+    \draw[very thin,gray!30] (-2,-2) grid (2,2);
+    \draw[->] (-2,0) -- (2,0) node[right] {$x_1$};
+    \draw[->] (0,-2) -- (0,2) node[above] {$x_2$};
+
+    % Support vectors
+    \node[circle,fill=red,inner sep=2pt] (sv1) at (-1,1) {};
+    \node[circle,fill=red,inner sep=2pt] (sv2) at (1,1.5) {};
+    \node[circle,fill=blue,inner sep=2pt] (sv3) at (0,-1) {};
+
+    % Other points
+    \node[circle,fill=red,inner sep=2pt] at (-1.8,1.2) {};
+    \node[circle,fill=red,inner sep=2pt] at (0.5,1.5) {};
+    \node[circle,fill=blue,inner sep=2pt] at (-0.5,-1.5) {};
+    \node[circle,fill=blue,inner sep=2pt] at (0.8,-1.2) {};
+
+    % Line connecting same-class support vectors
+    \draw[dashed] (sv1) -- (sv2);
+
+    % Parallel line through third support vector
+    \draw[dashed] ($(sv3)+(-1,-0.25)$) -- ($(sv3)+(2,0.5)$);
+
+    % Perpendicular line to the dashed lines
+    \draw[dotted] (1,-2) -- (0,1.5);
+
+    % Decision boundary (parallel, halfway between)
+    \draw[thick] (-2,-0.5) -- (2,0.5);
+
+    % Labels
+    \node at (-1.3,1.3) {$SV_1$};
+    \node at (1.3,1.3) {$SV_2$};
+    \node at (0.3,-1.3) {$SV_3$};
+    \node at (0,-2.3) {(b) Three support vectors};
+
+\end{tikzpicture}
+\end{figure}
 
 \subsection{Kernel Calculation Rules}\label{ch.kernelcalc}
 
@@ -1043,6 +1141,148 @@ $\mathbf{x}=\left(\mathbf{x}_a, \mathbf{x}_b\right), \mathbf{x}^{\prime}=\left(\
 To show that the dot product is a kernel, note that we can write the induced Gram matrix as a product of two matrices $\mathbf{K} = \psi^\top \psi$. From this it easily follows that $(\psi \mathbf{z})^\top \psi \mathbf{z} \geq 0$ for any $\mathbf{z}$ of appropriate dimensions.
 
 We can also apply Kernels on discrete data, we are not restricted to Euclidian distances.
+
+
+
+\section{Tree-Based Methods}
+
+\subsection{Decision Trees}
+
+\begin{itemize}
+	\item Idea: Partition feature space into rectangles, assign each rectangle a prediction value (e.g., mean of target values in rectangle for regression, majority class for classification).
+	\item Recursive binary splitting:
+	\begin{itemize}
+		\item Start with all data in one region
+		\item For each feature $j$ and split point $s$, consider splitting the data into two regions:
+		\begin{equation*}
+			R_1(j, s)=\left\{\mathbf{x} \mid x_j \leq s\right\} \quad \text { and } \quad R_2(j, s)=\left\{\mathbf{x} \mid x_j>s\right\}		
+		\end{equation*}
+		\item Create estimates for each region (e.g., for regression):
+		\begin{equation*}
+			\hat{y}_{R_j}=\operatorname{mean}\left(y_i \mid \mathbf{x}_i \in R_j\right) 
+		\end{equation*}
+		\item Choose $j$ and $s$ to minimize the \textbf{RSS} (regression) or \textbf{Gini index}/ \textbf{Entropy} (classification) of the two regions.
+		\item Recur on each region until stopping criterion is met (e.g., minimum number of observations in a node).
+	\end{itemize}
+	\item Prediction: For a new observation, follow the splits down the tree to reach a terminal node, and use the prediction value associated with that node.
+\end{itemize}
+
+Note: 
+
+\begin{itemize}
+	\item Greedy approach, does not guarantee globally optimal tree
+	\item Overfitting risk due to deep trees and flexibility $\to$ complexity penalty for tree pruning
+\end{itemize}
+
+
+\textbf{Algorithm:}
+
+\begin{enumerate}
+	\item Use recursive binary splitting to grow a large tree on the training data, stopping only when each terminal node has fewer than some minimum number of observations.
+	\item Apply cost complexity pruning to the large tree in order to obtain a sequence of best subtrees, as a function of $\alpha$ (e.g., penalty on number of final leafs)
+	\item Use K-fold cross-validation to choose $\alpha$. That is, divide the training observations into $K$ folds. For each $k=1, \ldots, K$ :
+	\begin{enumerate}
+		\item Repeat Steps 1 and 2 on all but the $k$ th fold of the training data.
+		\item Evaluate the mean squared prediction error on the data in the left-out $k$ th fold, as a function of $\alpha$.
+	\end{enumerate}
+	Average the results for each value of $\alpha$, and pick $\alpha$ to minimize the average error.
+	\item Return the subtree from Step 2 that corresponds to the chosen value of $\alpha$.
+\end{enumerate}
+
+
+\subsection{Ensemble Methods}
+
+
+\paragraph{Bagging.}
+
+Idea: Reduce variance of predictions by averaging multiple decision trees trained on different bootstrap samples of the training data.
+
+Let $B$ denote the number of bootstrap samples. For $b=1, \ldots, B$:
+\begin{enumerate}
+	\item Draw a bootstrap sample from the training data.
+	\item Train a decision tree $T_b$ on the bootstrap sample.
+\end{enumerate}
+Then, for regression, the bagged predictor is given by
+\begin{equation*}
+	\hat{f}_{\text {bag }}(\mathbf{x})=\frac{1}{B} \sum_{b=1}^B T_b(\mathbf{x})
+\end{equation*}
+For classification, the bagged predictor is given by majority vote among the $B$ trees.
+
+\begin{itemize}
+	\item At each sample, there are observations not included in the bootstrap sample, called out-of-bag (OOB) observations. These can be used to estimate prediction error without needing a separate validation set.
+
+	\item Variable importance can be assessed by measuring the increase in prediction error when a variable's values are permuted in the OOB samples.
+\end{itemize}
+
+\paragraph{Random Forests.}
+
+Issue with bagging: Trees can be highly correlated if some predictors are very strong.
+
+Solution: Random Forests introduce additional randomness by selecting a random subset of predictors at each split in the tree.
+
+
+
+\paragraph{Boosting.}
+
+Different, general framework to combine weak learners into a strong learner.
+
+Idea: Train models sequentially, each trying to correct the errors of the previous one.
+
+\begin{enumerate}
+	\item Set $\hat{f}(x)=0$ and $r_i=y_i$ for all $i$ in the training set.
+	
+	\item For $b=1,2, \ldots, B$, repeat:
+	\begin{enumerate}
+		\item Fit a tree $\hat{f}^b$ with $d$ splits ( $d+1$ terminal nodes) to the training data $(X, r)$.
+		\item Update $\hat{f}$ by adding in a shrunken version of the new tree:
+		$$
+		\hat{f}(x) \leftarrow \hat{f}(x)+\lambda \hat{f}^b(x) .
+		$$
+		\item Update the residuals,
+		$$
+		r_i \leftarrow r_i-\lambda \hat{f}^b\left(x_i\right) .
+		$$
+	\end{enumerate}
+
+	\item Output the boosted model,
+	$$
+	\hat{f}(x)=\sum_{b=1}^B \lambda \hat{f}^b(x) .
+	$$
+\end{enumerate}
+
+Notes:
+
+\begin{itemize}
+	\item Somewhat larger overfitting risk compared to bagging/random forests since trees are built sequentially
+	\item Often choose $d$ small (e.g., 1), i.e., weak learners
+\end{itemize}
+
+These methods can be adapted to classification and other loss functions and are generally known as Gradient Boosting Machines (GBM).
+
+To see where the name comes from, note that in step 2a, we are fitting the new tree to the negative gradient of the loss function with respect to the current model's predictions.
+
+At step $m$, you already have a model $f_{m-1}$. For each training sample $i$, compute the negative gradient of the loss w.r.t. the current prediction:
+$$
+g_{i m}=-\left[\frac{\partial L\left(y_i, f\left(x_i\right)\right)}{\partial f\left(x_i\right)}\right]_{F=F_{m-1}}
+$$
+These $\left\{g_{i m}\right\}$ are called pseudo-residuals. 
+
+\emph{Example: squared error loss.} Take
+$$
+L(y, f(x))=\frac{1}{2}(y-f(x))^2
+$$
+Then
+$$
+\frac{\partial L}{\partial f(x)}=-(y-f(x))
+$$
+So the negative gradient is:
+$$
+-\frac{\partial L}{\partial f(x)}=y-f(x)
+$$
+i.e. the usual residuals. So in this case:
+$$
+g_{i m}=y_i-f_{m-1}\left(x_i\right)
+$$
 
 
 \section{Neural Networks}
@@ -1615,6 +1855,12 @@ Suppose we have $\mathbf{Z}=\mathbf{X} \mathbf{V}_k=\mathbf{U}_k \boldsymbol{\Si
 
 We may identify the number of PCs to keep by identifiyng a `kink' in plotting $k$ vs reconstruction error, or by using a threshold $t$ such that $\frac{\left\|\mathbf{X}-\mathbf{X}_k\right\|_F^2}{\|\mathbf{X}\|_F^2}=\frac{\sigma_{k+1}^2+\cdots+\sigma_D^2}{\sigma_1^2+\cdots+\sigma_D^2} \leq t$.
 
+\subsubsection*{Applications}
+
+\begin{itemize}
+	\item Eigenfaces: Sets of eigenvectors used for face detection of face recognition.\footnote{Map faces to principal components, apply distance measure on projections.} Useful to compute PCA with $D \gg N$ approach, compact and simple models
+	\item Semantic analytics: Suppose $\mathbf{x}_i$ is vector of keyword counts, $\left\langle\mathbf{z}_i, \mathbf{z}_j\right\rangle$  is likely a better notion of similarity than $\left\langle\mathbf{x}_i, \mathbf{x}_j\right\rangle$ as it accounts for correlation between different words which are highly correlated.\footnote{One may view $\mathbf{z}_i$ as coefficients on the principal components. High similarity between coefficients means that similar highly correlated words are used in two articles.}
+\end{itemize}
 
 \clearpage
 
@@ -1701,6 +1947,72 @@ where $\det(A)$ is the determinant and $\text{adj}(A)$ is the adjugate matrix.
 
 
 
+
+
+
+
+\subsubsection*{Hessian and Gradient}
+
+\begin{definition}
+	$f: \mathbb{R}^m \rightarrow \mathbb{R}$. The \textbf{gradient}, denoted as $\nabla_{\mathbf{x}} f$, is a column vector containing all individual partial derivatives:
+	$$
+	\nabla_{\mathbf{x}} f=\left[\begin{array}{c}
+	\frac{\partial f}{\partial x_1} \\
+	\vdots \\
+	\frac{\partial f}{\partial x_m}
+	\end{array}\right]
+	$$
+\end{definition}
+
+\begin{definition}
+	$f: \mathbb{R}^m \rightarrow \mathbb{R}$. If the second partial derivatives of $f$ all exist, the \textbf{Hessian} matrix is defined as $\nabla_{\mathbf{x}}^2 f$ of $f$, which is a matrix $\left[\nabla_{\mathbf{x}}^2 f\right]_{i, j}=\frac{\partial^2 f}{\partial x_i \partial x_j}$ of second-order partial derivatives:
+	$$
+	\nabla_{\mathbf{x}}^2 f=\left[\begin{array}{ccc}
+	\frac{\partial^2 f}{\partial x_1^2} & \cdots & \frac{\partial^2 f}{\partial x_1 \partial x_m} \\
+	\vdots & & \vdots \\
+	\frac{\partial^2 f}{\partial x_m \partial x_1} & \cdots & \frac{\partial^2 f}{\partial x_m^2}
+	\end{array}\right]
+	$$
+\end{definition}
+
+If we obtain gradient $\mathbf{g}$ in vector notation, we can write the Hessian as
+\begin{equation*}
+	\nabla_\mathbf{x} \mathbf{g}^T
+\end{equation*}
+The original gradient gives us a multi-valued function, we now take the gradient of each element of this multi-valued function.
+
+Also, we may write this as
+\begin{equation*}
+	\frac{d}{d\mathbf{x} d\mathbf{x}^T} f(\mathbf{x})
+\end{equation*}
+
+\subsubsection*{Probability}
+
+Bernoulli: One-shot experiment with two possible outcomes, $x \in \left\{0,1\right\}$
+\begin{equation*}
+	p(X) = \theta^x (1-\theta)^{1-x}
+\end{equation*}
+
+Binomial:
+Distribution of the number of successes in a sequence of $n$ independent 0-1 experiments, where each experiment is a Bernoulli trial
+$$
+p(X=k)=\binom{n}{k} \cdot \phi^k \cdot(1-\phi)^{n-k}
+$$
+
+Normal:
+\begin{equation*}
+	\mathcal{N}\left(x ; \mu, \sigma^2\right)=\sqrt{\frac{1}{2 \pi \sigma^2}} \exp \left(-\frac{1}{2 \sigma^2}(x-\mu)^2\right)
+\end{equation*}
+
+Multi-variate normal:
+\begin{equation*}
+	\mathcal{N}(\mathbf{x} ; \mu, \boldsymbol{\Sigma})=\sqrt{\frac{1}{(2 \pi)^k \operatorname{det}(\boldsymbol{\Sigma})}} \exp \left(-\frac{1}{2}(\mathbf{x}-\mu)^{\top} \boldsymbol{\Sigma}^{-1}(\mathbf{x}-\mu)\right)
+\end{equation*}
+
+Laplace:
+\begin{equation*}
+	\operatorname{Lap}(x ; \mu, \gamma)=\frac{1}{2 \gamma} \exp \left(-\frac{|x-\mu|}{\gamma}\right)
+\end{equation*}
 
 
 \section{Complexity of matrix computations}
